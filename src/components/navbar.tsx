@@ -49,7 +49,6 @@ function NavLink({
       className={cn("group", NAV_CLASSES, active ? NAV_ACTIVE : NAV_INACTIVE)}
       aria-current={active ? "page" : undefined}
     >
-      {/* 기존: group-hover:text-white */}
       <Icon className="h-4 w-4 transition-colors group-hover:text-primary" />
       <span className="group-hover:text-primary">{label}</span>
     </Link>
@@ -78,6 +77,7 @@ function AdminMenu({ active }: { active: boolean }) {
             active ? NAV_ACTIVE : NAV_INACTIVE,
             "hover:bg-primary hover:text-white",
             "data-[state=open]:bg-primary data-[state=open]:text-white",
+            "focus-visible:outline-none focus-visible:ring-0",
           )}
         >
           <Shield className="h-4 w-4 transition-colors group-hover:text-white group-data-[state=open]:text-white" />
@@ -104,7 +104,7 @@ function AdminMenu({ active }: { active: boolean }) {
               className="group cursor-pointer rounded-sm"
             >
               <Link href={href} className="w-full flex items-center">
-                <Icon className="mr-2 h-4 w-4 transition-colors group-hover:text-white" />
+                <Icon className="mr-2 h-4 w-4 transition-colors group-hover:text-accent-foreground" />
                 <span className="transition-colors">{label}</span>
               </Link>
             </DropdownMenuItem>
@@ -133,32 +133,31 @@ export function Navbar() {
 
   return (
     <nav
-      className="h-16 bg-white border-b border-border flex items-center justify-between px-8 shadow-sm"
+      className="h-16 bg-white border-b border-border flex flex-wrap items-center justify-between px-4 sm:px-8 shadow-sm"
       role="navigation"
       aria-label="Global"
     >
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-4 sm:gap-8 min-w-0">
         <Link
           href="/"
-          className="text-xl font-bold text-primary whitespace-nowrap"
+          className="text-lg sm:text-xl font-bold text-primary whitespace-nowrap"
           aria-label="Care Diary 홈으로 이동"
         >
           Care Diary
         </Link>
 
-        <div className="flex items-center gap-2 sm:gap-6">
+        <div className="flex items-center gap-2 sm:gap-6 min-w-0 overflow-x-auto">
           <NavLink
             href="/dashboard"
             icon={Home}
             label="대시보드"
             active={isDashboard}
           />
-
           {userRole === "admin" && <AdminMenu active={isAdmin} />}
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4 mt-2 sm:mt-0">
         <span className="text-sm font-medium text-foreground hidden sm:inline">
           {currentUserName} 님
         </span>
@@ -167,7 +166,7 @@ export function Navbar() {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="relative h-9 w-9 rounded-sm hover:bg-accent"
+              className="relative h-9 w-9 rounded-sm hover:bg-accent shrink-0 focus-visible:outline-none focus-visible:ring-0"
               aria-label="사용자 메뉴 열기"
             >
               <Avatar className="h-9 w-9">
@@ -189,10 +188,9 @@ export function Navbar() {
               onClick={goProfile}
               className="group cursor-pointer rounded-sm"
             >
-              <UserIcon className="mr-2 h-4 w-4 transition-colors group-hover:text-white" />
+              <UserIcon className="mr-2 h-4 w-4 transition-colors group-hover:text-accent-foreground" />
               <span className="transition-colors">마이페이지</span>
             </DropdownMenuItem>
-
             <DropdownMenuItem
               onClick={logout}
               className="group cursor-pointer rounded-sm text-destructive focus:text-white focus:bg-destructive hover:text-white hover:bg-destructive"
