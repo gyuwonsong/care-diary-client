@@ -75,7 +75,7 @@ function AdminMenu({ active }: { active: boolean }) {
             "group",
             NAV_CLASSES,
             active ? NAV_ACTIVE : NAV_INACTIVE,
-            "hover:bg-primary hover:text-white",
+            "hover:bg-primary hover:text-white hover:font-medium",
             "data-[state=open]:bg-primary data-[state=open]:text-white",
             "focus-visible:outline-none focus-visible:ring-0",
           )}
