@@ -3,11 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
+import LayoutContent from "@/components/common/layout-content";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
@@ -48,17 +46,13 @@ export default function RootLayout({
           <Navbar />
         </div>
 
-        <main className="flex-1 grid place-items-center min-h-0 p-4">
-          {children}
-        </main>
+        <LayoutContent>{children}</LayoutContent>
 
         <div id="portal-root" />
         <Toaster
           position="bottom-right"
           toastOptions={{
-            classNames: {
-              description: "text-xs !text-black leading-relaxed",
-            },
+            classNames: { description: "text-xs !text-black leading-relaxed" },
           }}
         />
       </body>
