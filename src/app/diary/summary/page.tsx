@@ -13,6 +13,10 @@ export default function DiarySummaryPage() {
     "오늘은 병원에 다녀왔다. 검사 결과가 좋아서 안심이 되었다. 가족들과 함께 저녁 식사를 하며 즐거운 시간을 보냈다.";
   const reflection1 = 8;
   const reflection2 = 7;
+  const reflection3 = 7;
+  const reflection4 = 5;
+  const reflection5 = 6;
+  const reflection6 = 8;
   const date = "2025-10-27   22:49";
 
   const today = formatKoreanDate(new Date());
@@ -35,6 +39,7 @@ export default function DiarySummaryPage() {
           <CardHeader className="space-y-4">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg">
+                {/* TODO: 공감 요약 요청 멘트 */}
                 이번주도 너무 고생하셨어요! ✨
               </CardTitle>
             </div>
@@ -60,13 +65,33 @@ export default function DiarySummaryPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-muted-foreground">
-                    깊은 내면의 감정 표현
+                    내면 표현 정도
                   </p>
                   <p className="font-semibold text-primary">{reflection1}</p>
                 </div>
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-muted-foreground">경험의 의미</p>
+                  <p className="text-sm text-muted-foreground">슬픔 정도</p>
                   <p className="font-semibold text-primary">{reflection2}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground">분노 정도</p>
+                  <p className="font-semibold text-primary">{reflection3}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground">행복감 정도</p>
+                  <p className="font-semibold text-primary">{reflection4}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground">
+                    일기 작성의 가치·의미
+                  </p>
+                  <p className="font-semibold text-primary">{reflection5}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground">
+                    오늘 작성한 일기 점수
+                  </p>
+                  <p className="font-semibold text-primary">{reflection6}</p>
                 </div>
               </div>
             </div>
