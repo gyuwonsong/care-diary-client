@@ -66,7 +66,7 @@ export function MainContent({
         <Button className="gap-2 rounded-sm" asChild>
           <Link href="/survey">
             <CircleCheckBig className="h-4 w-4" />
-            회기별 설문 참여
+            정기 설문 참여
           </Link>
         </Button>
       )}

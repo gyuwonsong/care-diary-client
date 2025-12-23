@@ -92,7 +92,7 @@ export const UI_TEXT = {
   },
   GRAPHS: {
     TITLE: "척도 분석",
-    SESSION: "회기",
+    SESSION: "차수",
     SCORE: "점수",
     EMPTY_STATE: "아직 데이터가 없습니다",
   },

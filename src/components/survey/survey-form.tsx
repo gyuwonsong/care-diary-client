@@ -154,7 +154,7 @@ export function SurveyForm({
 
   const MODE_BADGE = {
     register: { label: "회원가입 설문", sub: "초기 상태 확인" },
-    session: { label: "회기별 설문", sub: "정기 척도 평가" },
+    session: { label: "정기 설문 (8회기 당 1번)", sub: "정기 척도 평가" },
   } as const;
 
   return (
