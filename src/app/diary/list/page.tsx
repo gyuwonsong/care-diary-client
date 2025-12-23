@@ -173,7 +173,7 @@ export default function DiaryListPage() {
 
               return (
                 <Link key={diary.id} href={`/diary/${diary.id}`}>
-                  <Card className="hover:bg-muted/60 transition-colors cursor-pointer mb-4">
+                  <Card className="hover:bg-muted/50 transition-colors cursor-pointer mb-4">
                     <CardContent className="flex items-start gap-4 py-2">
                       <div
                         className={`
@@ -186,7 +186,6 @@ export default function DiaryListPage() {
                         />
                       </div>
 
-                      {/* 텍스트 영역 */}
                       <div className="flex-1 space-y-1">
                         <div className="flex items-center justify-between gap-2">
                           <p className="text-sm font-semibold">
@@ -208,7 +207,6 @@ export default function DiaryListPage() {
           )}
         </section>
 
-        {/* 페이지네이션 */}
         {paginatedDiaries.length > 0 && (
           <section className="flex justify-center pt-2">
             <Pagination>
