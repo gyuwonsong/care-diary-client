@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -19,6 +19,8 @@ import YearMonthSelect from "@/components/register/year-month-select";
 import {
   getOAuthProvider,
   getOAuthSession,
+  OAuthProvider,
+  OAuthType,
   updateOAuthToken,
 } from "@/lib/auth-storage";
 import { decodeJwtPayload } from "@/lib/jwt";
@@ -57,8 +59,16 @@ type RegisterFormData = Omit<
 export default function RegisterPage() {
   const router = useRouter();
 
-  const { type, token } = useMemo(() => getOAuthSession(), []);
-  const provider = useMemo(() => getOAuthProvider(), []);
+  const [oauthType, setOauthType] = useState<OAuthType | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [provider, setProvider] = useState<OAuthProvider | null>(null);
+
+  useEffect(() => {
+    const s = getOAuthSession();
+    setOauthType(s.type);
+    setToken(s.token);
+    setProvider(getOAuthProvider());
+  }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [readonlyEmail, setReadonlyEmail] = useState("");
@@ -92,7 +102,7 @@ export default function RegisterPage() {
   });
 
   useEffect(() => {
-    if (!token || type !== "NEW") {
+    if (!token || oauthType !== "NEW") {
       router.replace("/login");
       return;
     }
@@ -108,7 +118,7 @@ export default function RegisterPage() {
     const nextEmail = payload?.email ?? payload?.userEmail ?? "";
 
     setReadonlyEmail(nextEmail);
-  }, [router, token, type]);
+  }, [router, token, oauthType]);
 
   const isAdmin = formData.role === UserRegisterRequestRoleEnum.Admin;
 

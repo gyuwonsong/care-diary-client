@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { setOAuthSession } from "@/lib/auth-storage";
 import type { OAuthType } from "@/lib/auth-storage";
 
@@ -10,9 +10,9 @@ const isOAuthType = (v: string): v is OAuthType =>
 
 export default function CallbackPage() {
   const router = useRouter();
-  const sp = useSearchParams();
 
   useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
     const typeParam = sp.get("type");
     const token = sp.get("token");
 
@@ -23,10 +23,6 @@ export default function CallbackPage() {
     }
 
     setOAuthSession(typeParam, token);
-    console.log(
-      "saved token head:",
-      sessionStorage.getItem("oauth:token")?.slice(0, 20),
-    );
 
     window.history.replaceState(
       {},
@@ -44,9 +40,8 @@ export default function CallbackPage() {
       return;
     }
 
-    // TODO : DUPLICATE_EMAIL 처리
-    // router.replace("/login/duplicate-email");
-  }, [router, sp]);
+    router.replace("/login/duplicate-email");
+  }, [router]);
 
   return null;
 }
