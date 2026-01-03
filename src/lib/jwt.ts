@@ -25,10 +25,6 @@ export function decodeJwtPayload<T extends JwtPayload = JwtPayload>(
     return JSON.parse(json) as T;
   } catch (e) {
     console.error("JWT decode failed:", e);
-    console.log("token head:", token.slice(0, 20));
-    console.log("parts:", token.trim().split(".").length);
-    console.log("payload:", token.trim().split(".")[1]);
-
     return null;
   }
 }
