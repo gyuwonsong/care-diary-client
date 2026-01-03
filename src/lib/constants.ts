@@ -1,4 +1,10 @@
 import { Frown, Heart, Smile } from "lucide-react";
+import {
+  UserRegisterRequestGenderEnum,
+  UserRegisterRequestMedicalCoverageEnum,
+  UserRegisterRequestDisabilityStatusEnum,
+  UserRegisterRequestDisabilitySeverityEnum,
+} from "@/generated-api";
 
 export type Emotion = "HAPPY" | "LOVE" | "SAD";
 export type Gender = "MALE" | "FEMALE";
@@ -54,11 +60,6 @@ export const EMOTION_CONFIG = {
     selectedBg: "bg-purple-500/20",
     border: "border-purple-500",
   },
-};
-
-export const GENDER_LABELS: Record<Gender, string> = {
-  [Gender.MALE]: "남성",
-  [Gender.FEMALE]: "여성",
 };
 
 export const SCALE_LABELS: Record<ScaleType, string> = {
@@ -173,17 +174,6 @@ export type MedicalCoverage =
   | "NEAR_POOR_2"
   | "";
 
-export const MEDICAL_COVERAGE_LABELS: Record<
-  Exclude<MedicalCoverage, "">,
-  string
-> = {
-  HEALTH_INSURANCE: "건강보험",
-  MEDICAL_AID_1: "의료급여 1종",
-  MEDICAL_AID_2: "의료급여 2종",
-  NEAR_POOR_1: "차상위 1종",
-  NEAR_POOR_2: "차상위 2종",
-};
-
 export type DisabilityStatus = "REGISTERED" | "IN_PROGRESS" | "NOT_REGISTERED";
 export type DisabilitySeverity = "SEVERE" | "NOT_SEVERE" | "";
 
@@ -204,4 +194,43 @@ export const SOCIAL_WELFARE_LABELS: Record<SocialWelfareService, string> = {
   DISABILITY_PENSION: "장애인 연금",
   NATIONAL_PENSION_DISABILITY_PENSION: "국민연금 내 장애 연금",
   BASIC_PENSION: "기초연금",
+};
+
+export const GENDER_LABELS: Record<UserRegisterRequestGenderEnum, string> = {
+  [UserRegisterRequestGenderEnum.Male]: "남성",
+  [UserRegisterRequestGenderEnum.Female]: "여성",
+};
+
+export const MEDICAL_COVERAGE_LABELS: Record<
+  UserRegisterRequestMedicalCoverageEnum,
+  string
+> = {
+  [UserRegisterRequestMedicalCoverageEnum.HealthInsurance]: "건강보험",
+  [UserRegisterRequestMedicalCoverageEnum.MedicalAid1]: "의료급여 1종",
+  [UserRegisterRequestMedicalCoverageEnum.MedicalAid2]: "의료급여 2종",
+  [UserRegisterRequestMedicalCoverageEnum.NearPoor1]: "차상위 1종",
+  [UserRegisterRequestMedicalCoverageEnum.NearPoor2]: "차상위 2종",
+};
+
+export const DISABILITY_STATUS_LABELS: Record<
+  UserRegisterRequestDisabilityStatusEnum,
+  string
+> = {
+  [UserRegisterRequestDisabilityStatusEnum.Registered]: "등록",
+  [UserRegisterRequestDisabilityStatusEnum.InProgress]: "진행 중",
+  [UserRegisterRequestDisabilityStatusEnum.NotRegistered]: "미등록",
+};
+
+export const DISABILITY_SEVERITY_LABELS: Record<
+  UserRegisterRequestDisabilitySeverityEnum,
+  string
+> = {
+  [UserRegisterRequestDisabilitySeverityEnum.Severe]: "심한 장애",
+  [UserRegisterRequestDisabilitySeverityEnum.NotSevere]: "심하지 않은 장애",
+};
+
+export const PROVIDER_LABELS: Record<"google" | "naver" | "kakao", string> = {
+  google: "구글",
+  naver: "네이버",
+  kakao: "카카오",
 };
