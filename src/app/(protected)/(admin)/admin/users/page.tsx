@@ -7,7 +7,6 @@ import { UserDetail } from "@/components/admin/user-detail";
 import { UserRole, Gender } from "@/lib/constants";
 import type { User, RiskInfo } from "@/lib/types";
 import { UsageManagement } from "@/components/admin/usage-management";
-import { AdminGuard } from "@/components/auth/admin-guard";
 
 export default function AdminUsersPage() {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
@@ -152,44 +151,42 @@ export default function AdminUsersPage() {
   const selectedUser = users.find((u) => u.id === selectedUserId);
 
   return (
-    <AdminGuard>
-      <div className="flex h-screen flex-col bg-white">
-        <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
+    <div className="flex h-screen flex-col bg-white">
+      <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
 
-        <div className="flex flex-1 overflow-hidden">
-          {activeTab === "users" ? (
-            <>
-              <div className="w-80 border-r border-border bg-white">
-                <div className="border-b border-border px-6 py-4">
-                  <h1 className="text-xl font-bold">사용자 관리</h1>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    전체 사용자 목록
-                  </p>
-                </div>
-                <UserList
-                  users={users}
-                  selectedUserId={selectedUserId}
-                  onSelectUser={setSelectedUserId}
-                />
+      <div className="flex flex-1 overflow-hidden">
+        {activeTab === "users" ? (
+          <>
+            <div className="w-80 border-r border-border bg-white">
+              <div className="border-b border-border px-6 py-4">
+                <h1 className="text-xl font-bold">사용자 관리</h1>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  전체 사용자 목록
+                </p>
               </div>
-
-              <div className="flex-1 overflow-auto bg-white">
-                {selectedUser ? (
-                  <UserDetail user={selectedUser} />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-muted-foreground">
-                    좌측에서 사용자를 선택해주세요
-                  </div>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className="flex-1 overflow-auto bg-muted">
-              <UsageManagement />
+              <UserList
+                users={users}
+                selectedUserId={selectedUserId}
+                onSelectUser={setSelectedUserId}
+              />
             </div>
-          )}
-        </div>
+
+            <div className="flex-1 overflow-auto bg-white">
+              {selectedUser ? (
+                <UserDetail user={selectedUser} />
+              ) : (
+                <div className="flex h-full items-center justify-center text-muted-foreground">
+                  좌측에서 사용자를 선택해주세요
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="flex-1 overflow-auto bg-muted">
+            <UsageManagement />
+          </div>
+        )}
       </div>
-    </AdminGuard>
+    </div>
   );
 }

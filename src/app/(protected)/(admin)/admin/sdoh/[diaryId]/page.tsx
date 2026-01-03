@@ -1,4 +1,3 @@
-import { AdminGuard } from "@/components/auth/admin-guard";
 import SdohResultsContent from "@/components/admin/sdoh-results-content";
 
 interface SdohParams {
@@ -12,9 +11,5 @@ export default async function SdohResultsPage({
 }) {
   const { diaryId } = await params;
 
-  return (
-    <AdminGuard>
-      <SdohResultsContent diaryId={diaryId} />
-    </AdminGuard>
-  );
+  return <SdohResultsContent diaryId={diaryId} />;
 }

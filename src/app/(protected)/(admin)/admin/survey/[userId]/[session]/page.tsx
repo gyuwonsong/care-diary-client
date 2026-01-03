@@ -1,6 +1,5 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { AdminGuard } from "@/components/auth/admin-guard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type {
@@ -114,7 +113,7 @@ export default async function SurveyDetailPage({
   const angerTotal = calculateTotalScore(angerResponse);
 
   return (
-    <AdminGuard>
+    <div>
       <div className="min-h-screen bg-muted">
         <header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur">
           <div className=" flex h-16 max-w-3xl items-center gap-4 px-6">
@@ -290,6 +289,6 @@ export default async function SurveyDetailPage({
           </div>
         </main>
       </div>
-    </AdminGuard>
+    </div>
   );
 }

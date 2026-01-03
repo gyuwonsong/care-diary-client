@@ -95,7 +95,7 @@ function LoadingView({ today }: { today: string }) {
       </header>
 
       <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-6">
-        <Card className="w-full max-w-xl border-0 shadow-lg">
+        <Card className="w-full max-w-xl border-0">
           <CardHeader>
             <CardTitle className="text-lg">
               오늘의 일기를 정리하고 있어요 ✨

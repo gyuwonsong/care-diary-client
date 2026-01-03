@@ -16,6 +16,7 @@ import type {
   CommonResponseDiaryDatesResponse,
   CommonResponseDiaryFindAllResponse,
 } from "@/generated-api";
+import { TODAY_QUESTIONS } from "@/lib/today-questions";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -326,6 +327,12 @@ export default function HomePage() {
     setSelectedDate((prev) => (prev === date ? null : date));
   };
 
+  const todayQuestion = useMemo(() => {
+    if (termCount <= 0) return TODAY_QUESTIONS[0];
+    const idx = (termCount - 1) % 8;
+    return TODAY_QUESTIONS[idx];
+  }, [termCount]);
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
@@ -352,7 +359,7 @@ export default function HomePage() {
             month={month}
             diaryEntries={diaryEntries}
             shouldTakeSessionSurvey={isScaleQuestionRequired}
-            todayQuestion={null}
+            todayQuestion={todayQuestion}
             recommended={recommended.map((x) => ({
               title:
                 typeof (x as unknown as { title?: unknown }).title === "string"

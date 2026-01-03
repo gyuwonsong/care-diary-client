@@ -12,6 +12,13 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import AddressField from "@/components/register/address-field";
 import YearMonthSelect from "@/components/register/year-month-select";
@@ -32,7 +39,7 @@ import {
   DISABILITY_STATUS_LABELS,
   MEDICAL_COVERAGE_LABELS,
   PROVIDER_LABELS,
-} from "@/lib/register-enums";
+} from "@/lib/constants";
 
 import {
   type UserRegisterRequest,
@@ -60,6 +67,7 @@ export default function RegisterPage() {
   const router = useRouter();
 
   const [oauthType, setOauthType] = useState<OAuthType | null>(null);
+  const [authReady, setAuthReady] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [provider, setProvider] = useState<OAuthProvider | null>(null);
 
@@ -68,6 +76,7 @@ export default function RegisterPage() {
     setOauthType(s.type);
     setToken(s.token);
     setProvider(getOAuthProvider());
+    setAuthReady(true);
   }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -101,7 +110,34 @@ export default function RegisterPage() {
     socialWelfareServiceLabels: [],
   });
 
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthDay, setBirthDay] = useState("");
+
+  const YEARS = Array.from({ length: 100 }, (_, i) =>
+    String(new Date().getFullYear() - i),
+  );
+
+  const MONTHS = Array.from({ length: 12 }, (_, i) =>
+    String(i + 1).padStart(2, "0"),
+  );
+
+  const DAYS = Array.from({ length: 31 }, (_, i) =>
+    String(i + 1).padStart(2, "0"),
+  );
+
   useEffect(() => {
+    if (birthYear && birthMonth && birthDay) {
+      setFormData((prev) => ({
+        ...prev,
+        birthDate: `${birthYear}-${birthMonth}-${birthDay}`,
+      }));
+    }
+  }, [birthYear, birthMonth, birthDay]);
+
+  useEffect(() => {
+    if (!authReady) return;
+
     if (!token || oauthType !== "NEW") {
       router.replace("/login");
       return;
@@ -113,12 +149,12 @@ export default function RegisterPage() {
       userName?: string;
       userEmail?: string;
     };
-    const payload = decodeJwtPayload<JwtPayload>(token);
 
+    const payload = decodeJwtPayload<JwtPayload>(token);
     const nextEmail = payload?.email ?? payload?.userEmail ?? "";
 
     setReadonlyEmail(nextEmail);
-  }, [router, token, oauthType]);
+  }, [authReady, token, oauthType, router]);
 
   const isAdmin = formData.role === UserRegisterRequestRoleEnum.Admin;
 
@@ -233,12 +269,18 @@ export default function RegisterPage() {
           });
 
       const res = await userApi.register({ userRegisterRequest });
-
       const nextToken = res.data?.accessToken;
-      if (nextToken) updateOAuthToken(nextToken);
 
-      if (isAdmin) router.push("/admin/users");
-      else router.push("/register/questions");
+      if (nextToken) {
+        updateOAuthToken(nextToken);
+        const payload = decodeJwtPayload<{ role?: string }>(nextToken);
+
+        if (payload?.role === "ADMIN") {
+          router.push("/admin/users");
+        } else {
+          router.push("/register/questions");
+        }
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -350,21 +392,71 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="birthDate">
+                  <Label>
                     생년월일 <span className="text-destructive">*</span>
                   </Label>
-                  <Input
-                    id="birthDate"
-                    type="date"
-                    value={formData.birthDate}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        birthDate: e.target.value,
-                      }))
-                    }
-                    required
-                  />
+
+                  <div className="flex gap-3">
+                    {/* 년 */}
+                    <Select value={birthYear} onValueChange={setBirthYear}>
+                      <SelectTrigger className="w-full h-9 px-3">
+                        <SelectValue placeholder="년" />
+                      </SelectTrigger>
+                      <SelectContent
+                        side="bottom"
+                        align="start"
+                        sideOffset={4}
+                        avoidCollisions={false}
+                      >
+                        {" "}
+                        {YEARS.map((y) => (
+                          <SelectItem key={y} value={y}>
+                            {y}년
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {/* 월 */}
+                    <Select value={birthMonth} onValueChange={setBirthMonth}>
+                      <SelectTrigger className="w-full h-9 px-3">
+                        <SelectValue placeholder="월" />
+                      </SelectTrigger>
+                      <SelectContent
+                        side="bottom"
+                        align="start"
+                        sideOffset={4}
+                        avoidCollisions={false}
+                      >
+                        {" "}
+                        {MONTHS.map((m) => (
+                          <SelectItem key={m} value={m}>
+                            {m}월
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {/* 일 */}
+                    <Select value={birthDay} onValueChange={setBirthDay}>
+                      <SelectTrigger className="w-full h-9 px-3">
+                        <SelectValue placeholder="일" />
+                      </SelectTrigger>
+                      <SelectContent
+                        side="bottom"
+                        align="start"
+                        sideOffset={4}
+                        avoidCollisions={false}
+                      >
+                        {" "}
+                        {DAYS.map((d) => (
+                          <SelectItem key={d} value={d}>
+                            {d}일
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
