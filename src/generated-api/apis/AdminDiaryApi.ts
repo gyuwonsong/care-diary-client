@@ -15,11 +15,14 @@
 
 import * as runtime from '../runtime';
 import type {
+  CommonResponseAdminDiaryFindAllResponse,
   CommonResponseAdminDiaryKeywordResponse,
   CommonResponseAdminDiarySdohResponse,
   CommonResponseAdminDiaryWelfareServiceResponse,
 } from '../models/index';
 import {
+    CommonResponseAdminDiaryFindAllResponseFromJSON,
+    CommonResponseAdminDiaryFindAllResponseToJSON,
     CommonResponseAdminDiaryKeywordResponseFromJSON,
     CommonResponseAdminDiaryKeywordResponseToJSON,
     CommonResponseAdminDiarySdohResponseFromJSON,
@@ -27,6 +30,11 @@ import {
     CommonResponseAdminDiaryWelfareServiceResponseFromJSON,
     CommonResponseAdminDiaryWelfareServiceResponseToJSON,
 } from '../models/index';
+
+export interface FindAllByUserIdAndDateRequest {
+    userId: string;
+    date: Date;
+}
 
 export interface FindExtractedKeywordsRequest {
     diaryId: string;
@@ -44,6 +52,67 @@ export interface FindWelfareServicesRequest {
  * 
  */
 export class AdminDiaryApi extends runtime.BaseAPI {
+
+    /**
+     * 특정 사용자가 특정 날짜에 작성한 일기 목록을 조회합니다.
+     * 사용자별 일기 목록 조회
+     */
+    async findAllByUserIdAndDateRaw(requestParameters: FindAllByUserIdAndDateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CommonResponseAdminDiaryFindAllResponse>> {
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling findAllByUserIdAndDate().'
+            );
+        }
+
+        if (requestParameters['date'] == null) {
+            throw new runtime.RequiredError(
+                'date',
+                'Required parameter "date" was null or undefined when calling findAllByUserIdAndDate().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['userId'] != null) {
+            queryParameters['userId'] = requestParameters['userId'];
+        }
+
+        if (requestParameters['date'] != null) {
+            queryParameters['date'] = (requestParameters['date'] as any).toISOString().substring(0,10);
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("JWT", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/v1/admin/diaries`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CommonResponseAdminDiaryFindAllResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * 특정 사용자가 특정 날짜에 작성한 일기 목록을 조회합니다.
+     * 사용자별 일기 목록 조회
+     */
+    async findAllByUserIdAndDate(requestParameters: FindAllByUserIdAndDateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CommonResponseAdminDiaryFindAllResponse> {
+        const response = await this.findAllByUserIdAndDateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * 특정 일기에서 추출된 키워드 정보를 조회합니다.

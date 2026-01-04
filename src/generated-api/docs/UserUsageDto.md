@@ -1,31 +1,29 @@
 
-# AdminUserDto
+# UserUsageDto
 
-관리자 사용자 정보
+사용자별 사용량
 
 ## Properties
 
 Name | Type
 ------------ | -------------
 `userId` | string
-`name` | string
-`birthDate` | Date
-`primaryDiagnosis` | string
-`atRisk` | boolean
+`userName` | string
+`diaryCount` | number
+`analysisCount` | number
 
 ## Example
 
 ```typescript
-import type { AdminUserDto } from ''
+import type { UserUsageDto } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "userId": 550e8400-e29b-41d4-a716-446655440000,
-  "name": 홍길동,
-  "birthDate": 1990-01-15,
-  "primaryDiagnosis": 조현병,
-  "atRisk": false,
-} satisfies AdminUserDto
+  "userId": null,
+  "userName": null,
+  "diaryCount": null,
+  "analysisCount": null,
+} satisfies UserUsageDto
 
 console.log(example)
 
@@ -34,7 +32,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as AdminUserDto
+const exampleParsed = JSON.parse(exampleJSON) as UserUsageDto
 console.log(exampleParsed)
 ```
 
